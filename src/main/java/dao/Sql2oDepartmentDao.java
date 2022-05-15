@@ -29,8 +29,19 @@ public class Sql2oDepartmentDao implements DepartmentDao{
     }
 
     @Override
-    public void addUserToDept(Department department, User user) {
-
+    public void addUserToDepartment(Department department, User user) {
+        String sql = "INSERT INTO departments_users(deptid,userid) values (:deptid,:userid);";
+        try (Connection con = sql2o.open()) {
+            con.createQuery(sql)
+                    .addParameter("deptid",department.getId())
+                    .addParameter("userid",user.getId())
+                    .executeUpdate();
+            user.setDepartment(department.getName());
+            department.increaseTotalEmployees();
+            updateEmployeeNumber(department);
+        } catch (Sql2oException ex){
+            System.out.println("Failed attempt to insert user into department ");
+        }
     }
 
     @Override
@@ -64,7 +75,7 @@ public class Sql2oDepartmentDao implements DepartmentDao{
     }
 
     @Override
-    public void deleteEmployeeFromDept(Department department, User user) {
+    public void deleteEmployeeFromDepartment(Department department, User user) {
 
     }
 

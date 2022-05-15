@@ -9,7 +9,7 @@ import java.util.List;
 public interface DepartmentDao {
     //create
     void add(Department department);
-    void addUserToDept(Department department,User user);
+    void addUserToDepartment(Department department,User user);
 
     //read
     Department findById(int id);
@@ -22,7 +22,7 @@ public interface DepartmentDao {
 
     //delete
     void deleteDepartmentById(int id);
-    void deleteEmployeeFromDept(Department department, User user);
+    void deleteEmployeeFromDepartment(Department department, User user);
     void deleteDeptNewsById(int deptId, int newsId);
     void deleteAll();
 }

@@ -52,7 +52,13 @@ public class Department {
     public int getTotalEmployees() {
         return totalEmployees;
     }
+    public void increaseTotalEmployees(){
+        this.totalEmployees += 1;
 
+    }
+    public void decreaseTotalEmployees(){
+        this.totalEmployees -= 1;
+    }
     public void setTotalEmployees(int totalEmployees) {
         this.totalEmployees = totalEmployees;
     }
