@@ -15,13 +15,6 @@ public class User {
 
     }
 
-    public User(int id, String name, String role, String department) {
-        this.id = id;
-        this.name = name;
-        this.role = role;
-        this.department = department;
-
-    }
 
     @Override
     public boolean equals(Object o) {

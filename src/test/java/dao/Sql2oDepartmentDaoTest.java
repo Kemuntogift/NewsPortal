@@ -1,5 +1,7 @@
 package dao;
 
+import models.Department;
+import models.User;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,12 +30,11 @@ class Sql2oDepartmentDaoTest {
     }
 
     @Test
-    void add() {
+    void addDepartmentSetsId() {
+
     }
 
-    @Test
-    void findById() {
-    }
+
 
     @Test
     void allDepartments() {
@@ -69,5 +70,30 @@ class Sql2oDepartmentDaoTest {
 
     @Test
     void deleteAll() {
+    }
+
+//    HELPERS
+private Department firstDepartment(){
+    Department department = new Department("IT","Automating services", 5);
+    departmentDao.add(department);
+    return department;
+}
+
+    private Department secondDepartment(){
+        Department department = new Department("Welfare","Providing support to all", 6);
+        departmentDao.add(department);
+        return department;
+    }
+
+    private User firstUser(){
+        User user = new User("Diane","Cook","Catering");
+        userDao.add(user);
+        return user;
+    }
+
+    private User secondUser(){
+        User user = new User("Karen","Developer","IT");
+        userDao.add(user);
+        return user;
     }
 }
