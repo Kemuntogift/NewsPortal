@@ -25,55 +25,68 @@ class Sql2oDepartmentDaoTest {
     }
 
     @AfterEach
-    void tearDown() {
+    public void tearDown() {
         conn.close();
     }
 
     @Test
-    void addDepartmentSetsId() {
+    public void addDepartmentSetsId() {
+        Department testDepartment = setupDepartment();
+        assertEquals(1, testDepartment.getId());
+    }
 
+
+    @Test
+    public void getDepartmentUsingId(){
+        Department department = setupDepartment();
+        Department department2 = secondDepartment();
+        assertTrue(departmentDao.allDepartments().contains(department));
+        assertTrue(departmentDao.allDepartments().contains(department2));
+    }
+
+    @Test
+    public void deleteDepartmentById() {
+        Department department = setupDepartment();
+        Department department2= secondDepartment();
+        assertEquals(2,departmentDao.allDepartments().size());
+        departmentDao.deleteDepartmentById(department.getId());
+        assertEquals(0,departmentDao.allDepartments().size());
     }
 
 
 
     @Test
-    void allDepartments() {
+    public void addUserToDepartment() {
+        Department department = setupDepartment();
+        User user = setupUser();
+        departmentDao.addUserToDepartment(department,user);
+        assertEquals("IT",user.getDepartment());
     }
 
     @Test
-    void deleteDepartmentById() {
+    public void deleteEmployeeFromDepartment() {
+        Department department = setupDepartment();
+        User user = setupUser();
+        User user2 = secondUser();
+        departmentDao.addUserToDepartment(department,user);
+        departmentDao.addUserToDepartment(department,user2);
+
+        departmentDao.deleteEmployeeFromDepartment(department,user);
+        assertEquals(6,department.getTotalEmployees());
+        assertEquals("None",user.getDepartment());
     }
 
-    @Test
-    void allDepartmentEmployees() {
-    }
 
     @Test
-    void allDepartmentNews() {
-    }
-
-    @Test
-    void updateEmployeeNumber() {
-    }
-
-    @Test
-    void addUserToDepartment() {
-    }
-
-    @Test
-    void deleteEmployeeFromDepartment() {
-    }
-
-    @Test
-    void deleteDeptNewsById() {
-    }
-
-    @Test
-    void deleteAll() {
+    public void deleteAll() {
+        Department department = setupDepartment();
+        Department department2= secondDepartment();
+        departmentDao.deleteAll();
+        assertEquals(0,departmentDao.allDepartments().size());
     }
 
 //    HELPERS
-private Department firstDepartment(){
+private Department setupDepartment(){
     Department department = new Department("IT","Automating services", 5);
     departmentDao.add(department);
     return department;
@@ -85,7 +98,7 @@ private Department firstDepartment(){
         return department;
     }
 
-    private User firstUser(){
+    private User setupUser(){
         User user = new User("Diane","Cook","Catering");
         userDao.add(user);
         return user;
