@@ -67,15 +67,15 @@ public class Sql2oDepartmentDao implements DepartmentDao{
                     .addParameter("deptid",deptId)
                     .executeAndFetch(Integer.class);
 
-            for(int uId:userIds){
+            for(int userId:userIds){
                 String sql = "SELECT * FROM users WHERE id = :id";
                 employees.add(con.createQuery(sql)
-                        .addParameter("id",uId)
+                        .addParameter("id",userId)
                         .executeAndFetchFirst(User.class));
             }
 
         } catch (Sql2oException ex){
-            System.out.println("Couldn't recover employees: " +ex);
+            System.out.println("Could not recover employees");
         }
 
         return employees;
@@ -83,12 +83,38 @@ public class Sql2oDepartmentDao implements DepartmentDao{
 
     @Override
     public List<News> allDepartmentNews(int deptId) {
-        return null;
+        List<News> news = new ArrayList<>();
+
+        String joinQuery = "SELECT newsid FROM departments_news WHERE deptid = :deptid";
+        try (Connection con = sql2o.open()) {
+            List<Integer> newsIDs = con.createQuery(joinQuery)
+                    .addParameter("deptid",deptId)
+                    .executeAndFetch(Integer.class);
+
+            for(int nId:newsIDs){
+                String sql = "SELECT * FROM news WHERE id = :id";
+                news.add(con.createQuery(sql)
+                        .addParameter("id",nId)
+                        .executeAndFetchFirst(News.class));
+            }
+
+        } catch (Sql2oException ex){
+            System.out.println("Could not get news articles ");
+        }
+        return news;
     }
 
     @Override
     public void updateEmployeeNumber(Department department) {
-
+        String sql = "UPDATE departments SET totalemployees = :totalemployees WHERE id = :id";
+        try (Connection con = sql2o.open()) {
+            con.createQuery(sql)
+                    .addParameter("totalemployees",department.getTotalEmployees())
+                    .addParameter("id",department.getId())
+                    .executeUpdate();
+        } catch (Sql2oException ex) {
+            System.out.println(ex);
+        }
     }
 
     @Override
@@ -125,11 +151,24 @@ public class Sql2oDepartmentDao implements DepartmentDao{
 
     @Override
     public void deleteDeptNewsById(int deptId, int newsId) {
-
+        String sql = "DELETE from departments_news WHERE deptid = :deptid AND newsid = :newsid";
+        try (Connection con = sql2o.open()) {
+            con.createQuery(sql)
+                    .addParameter("deptid", deptId)
+                    .addParameter("newsid", newsId)
+                    .executeUpdate();
+        } catch (Sql2oException ex){
+            System.out.println(ex);
+        }
     }
 
     @Override
     public void deleteAll() {
-
+        String sql = "DELETE from departments";
+        try (Connection con = sql2o.open()) {
+            con.createQuery(sql).executeUpdate();
+        } catch (Sql2oException ex) {
+            System.out.println(ex);
+        }
     }
 }
