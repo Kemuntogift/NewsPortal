@@ -18,7 +18,7 @@ public interface DepartmentDao {
     List<News> allDepartmentNews(int deptId);
 
     //update
-    void updateEmployeeCount(Department department);
+    void updateEmployeeNumber(Department department);
 
     //delete
     void deleteDepartmentById(int id);
