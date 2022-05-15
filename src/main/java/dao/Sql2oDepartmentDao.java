@@ -46,12 +46,30 @@ public class Sql2oDepartmentDao implements DepartmentDao{
 
     @Override
     public Department findById(int id) {
-        return null;
+        String sql = "SELECT * from departments WHERE id=:id;";
+        try (Connection con = sql2o.open()) {
+            return con.createQuery(sql)
+                    .addParameter("id", id)
+                    .executeAndFetchFirst(Department.class);
+        }
     }
 
     @Override
     public List<Department> allDepartments() {
-        return null;
+        String sql = "SELECT * from departments;";
+        try (Connection con = sql2o.open()) {
+            return con.createQuery(sql)
+                    .executeAndFetch(Department.class);
+        }
+    }
+    @Override
+    public void deleteDepartmentById(int id) {
+        String sql = "DELETE from departments";
+        try (Connection con = sql2o.open()) {
+            con.createQuery(sql).executeUpdate();
+        } catch (Sql2oException ex) {
+            System.out.println(ex);
+        }
     }
 
     @Override
@@ -69,10 +87,6 @@ public class Sql2oDepartmentDao implements DepartmentDao{
 
     }
 
-    @Override
-    public void deleteDepartmentById(int id) {
-
-    }
 
     @Override
     public void deleteEmployeeFromDepartment(Department department, User user) {
