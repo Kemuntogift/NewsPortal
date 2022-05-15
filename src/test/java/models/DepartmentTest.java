@@ -49,5 +49,6 @@ class DepartmentTest {
         assertNotEquals(1,testDepartment.getTotalEmployees());
     }
     private Department setupDepartment() {
+        return new Department("Finance", "Handles money", 1);
     }
 }
