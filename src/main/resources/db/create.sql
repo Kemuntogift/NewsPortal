@@ -22,3 +22,17 @@ CREATE TABLE IF NOT EXISTS news (
   author VARCHAR
 );
 
+CREATE TABLE IF NOT EXISTS departments_users (
+  id int PRIMARY KEY auto_increment,
+  deptid int,
+  userid int
+);
+
+CREATE TABLE IF NOT EXISTS departments_users (
+  id int PRIMARY KEY auto_increment,
+  deptid int,
+  newsid int,
+  userid int
+);
+
+
