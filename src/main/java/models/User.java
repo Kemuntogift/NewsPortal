@@ -5,6 +5,13 @@ public class User {
     private String name;
     private String role;
 
+    public User(String name, String role, String department) {
+        this.name = name;
+        this.role = role;
+        this.department = department;
+    }
+
+
     public int getId() {
         return id;
     }
