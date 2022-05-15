@@ -17,12 +17,12 @@ class NewsTest {
     @Test
     public void getTitleReturnsCorrectTitle() throws Exception {
         News testNews = setupNews();
-        assertEquals("Breaking News", testNews.getTitle());
+        assertEquals("Breaking news", testNews.getTitle());
     }
     @Test
     public void getDescriptionReturnsCorrectDescription() throws Exception {
         News testNews = setupNews();
-        assertEquals("Schools closed over flu outbreak", testNews.getDescription());
+        assertEquals("Offices closed over flu outbreak", testNews.getDescription());
     }
     @Test
     public void getTypeReturnsCorrectType() throws Exception {
@@ -34,6 +34,31 @@ class NewsTest {
         News testNews = setupNews();
         assertEquals("Kemunto", testNews.getAuthor());
     }
+    @Test
+    public void setTitleSetsCorrectTitle() throws Exception {
+        News testNews = setupNews();
+        testNews.setTitle("Sports");
+        assertNotEquals("Breaking news",testNews.getTitle());
+    }
+    @Test
+    public void setDescriptionReturnsCorrectDescription() throws Exception {
+        News testNews = setupNews();
+        testNews.setDescription("Game today");
+        assertNotEquals("Offices closed over flu outbreak",testNews.getDescription());
+    }
+    @Test
+    public void setTypeSetsCorrectType() throws Exception {
+        News testNews = setupNews();
+        testNews.setType("Departmental");
+        assertNotEquals("General",testNews.getType());
+    }
+    @Test
+    public void setAuthorSetsCorrectAuthor() throws Exception {
+        News testNews = setupNews();
+        testNews.setAuthor("Brian");
+        assertNotEquals("Kemunto",testNews.getAuthor());
+    }
     private News setupNews() {
+        return new News ("Breaking news", "Offices closed over flu outbreak", "General", "Kemunto");
     }
 }
