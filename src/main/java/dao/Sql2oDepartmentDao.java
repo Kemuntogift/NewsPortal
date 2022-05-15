@@ -29,22 +29,6 @@ public class Sql2oDepartmentDao implements DepartmentDao{
     }
 
     @Override
-    public void addUserToDepartment(Department department, User user) {
-        String sql = "INSERT INTO departments_users(deptid,userid) values (:deptid,:userid);";
-        try (Connection con = sql2o.open()) {
-            con.createQuery(sql)
-                    .addParameter("deptid",department.getId())
-                    .addParameter("userid",user.getId())
-                    .executeUpdate();
-            user.setDepartment(department.getName());
-            department.increaseTotalEmployees();
-            updateEmployeeNumber(department);
-        } catch (Sql2oException ex){
-            System.out.println("Failed attempt to insert user into department ");
-        }
-    }
-
-    @Override
     public Department findById(int id) {
         String sql = "SELECT * from departments WHERE id=:id;";
         try (Connection con = sql2o.open()) {
@@ -74,7 +58,7 @@ public class Sql2oDepartmentDao implements DepartmentDao{
 
     @Override
     public List<User> allDepartmentEmployees(int deptId) {
-        return null;
+
     }
 
     @Override
@@ -87,10 +71,36 @@ public class Sql2oDepartmentDao implements DepartmentDao{
 
     }
 
+    @Override
+    public void addUserToDepartment(Department department, User user) {
+        String sql = "INSERT INTO departments_users(deptid,userid) values (:deptid,:userid);";
+        try (Connection con = sql2o.open()) {
+            con.createQuery(sql)
+                    .addParameter("deptid",department.getId())
+                    .addParameter("userid",user.getId())
+                    .executeUpdate();
+            user.setDepartment(department.getName());
+            department.increaseTotalEmployees();
+            updateEmployeeNumber(department);
+        } catch (Sql2oException ex){
+            System.out.println("Failed attempt to insert user into department ");
+        }
+    }
 
     @Override
     public void deleteEmployeeFromDepartment(Department department, User user) {
-
+        String sql = "DELETE from departments_users WHERE deptid = :deptid AND userid = :userid";
+        try (Connection con = sql2o.open()) {
+            con.createQuery(sql)
+                    .addParameter("deptid", department.getId())
+                    .addParameter("userid", user.getId())
+                    .executeUpdate();
+            user.setDepartment("None");
+            department.decreaseTotalEmployees();
+            updateEmployeeNumber(department);
+        } catch (Sql2oException ex){
+            System.out.println(ex);
+        }
     }
 
     @Override
