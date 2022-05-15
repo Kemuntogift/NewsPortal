@@ -58,6 +58,12 @@ class NewsTest {
         testNews.setAuthor("Brian");
         assertNotEquals("Kemunto",testNews.getAuthor());
     }
+    @Test
+    public void setId() {
+        News testNews = setupNews();
+        testNews.setId(5);
+        assertEquals(5, testNews.getId());
+    }
     private News setupNews() {
         return new News ("Breaking news", "Offices closed over flu outbreak", "General", "Kemunto");
     }

@@ -48,6 +48,12 @@ class DepartmentTest {
         testDepartment.setTotalEmployees(5);
         assertNotEquals(1,testDepartment.getTotalEmployees());
     }
+    @Test
+    public void setId() {
+        Department testDepartment = setupDepartment();
+        testDepartment.setId(5);
+        assertEquals(5, testDepartment.getId());
+    }
     private Department setupDepartment() {
         return new Department("Finance", "Handles money", 1);
     }

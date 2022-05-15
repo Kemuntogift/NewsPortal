@@ -48,6 +48,12 @@ class UserTest {
         testUser.setDepartment("Welfare");
         assertNotEquals("Finance", testUser.getDepartment());
     }
+    @Test
+    public void setId() {
+        User testUser = setupUser();
+        testUser.setId(5);
+        assertEquals(5, testUser.getId());
+    }
     private User setupUser() {
         return new User ("Anna", "Financial officer", "Finance");
     }
