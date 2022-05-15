@@ -1,45 +1,69 @@
 package dao;
 
+import models.Department;
 import models.User;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.sql2o.Connection;
+import org.sql2o.Sql2o;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class Sql2oUserDaoTest {
-    private static Sql2oUserDao userDao = new Sql2oUserDao();
+    private Connection conn;
+    private static Sql2oUserDao userDao;
     @BeforeEach
-    void setUp() {
+    public void setUp() {
+        String connectionString = "jdbc:h2:mem:testing;INIT=RUNSCRIPT from 'classpath:db/create.sql'";
+        Sql2o sql2o = new Sql2o(connectionString, "", "");
+        userDao = new Sql2oUserDao(sql2o);
+        conn = sql2o.open();
     }
 
     @AfterEach
-    void tearDown() {
+    public void tearDown() {
+        conn.close();
     }
 
     @Test
-    void add() {
+    void addUserSEtsId() {
+        User testUser = setupUser();
+        assertEquals(1, testUser.getId());
     }
 
     @Test
     void findById() {
+        User user = setupUser();
+        User user2 = secondUser();
+        User foundUser = userDao.findById(user.getId());
+        assertTrue(user.equals(foundUser));
     }
 
     @Test
     void allUsers() {
+        User user = setupUser();
+        User user2 = secondUser();
+        assertTrue(userDao.allUsers().contains(user));
+        assertTrue(userDao.allUsers().contains(user2));
     }
 
     @Test
     void deleteById() {
+        User user = setupUser();
+        User user2 = secondUser();
+        userDao.deleteById(user.getId());
+        assertEquals(1, userDao.allUsers().size());
     }
 
     @Test
     void deleteAll() {
+        User user = setupUser();
+        User user2 = secondUser();
+        userDao.deleteAll();
+        assertEquals(0, userDao.allUsers().size());
     }
 
-    @Test
-    void myNews() {
-    }
 //    HELPERS
 private User setupUser(){
     User user = new User("Diane","Cook","Catering");
