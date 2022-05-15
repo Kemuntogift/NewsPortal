@@ -7,6 +7,7 @@ import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 import org.sql2o.Sql2oException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Sql2oDepartmentDao implements DepartmentDao{
@@ -58,7 +59,26 @@ public class Sql2oDepartmentDao implements DepartmentDao{
 
     @Override
     public List<User> allDepartmentEmployees(int deptId) {
+        List<User> employees = new ArrayList<>();
 
+        String joinQuery = "SELECT userid FROM departments_users WHERE deptid = :deptid";
+        try (Connection con = sql2o.open()) {
+            List<Integer> userIds = con.createQuery(joinQuery)
+                    .addParameter("deptid",deptId)
+                    .executeAndFetch(Integer.class);
+
+            for(int uId:userIds){
+                String sql = "SELECT * FROM users WHERE id = :id";
+                employees.add(con.createQuery(sql)
+                        .addParameter("id",uId)
+                        .executeAndFetchFirst(User.class));
+            }
+
+        } catch (Sql2oException ex){
+            System.out.println("Couldn't recover employees: " +ex);
+        }
+
+        return employees;
     }
 
     @Override
