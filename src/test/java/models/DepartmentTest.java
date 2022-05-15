@@ -30,7 +30,24 @@ class DepartmentTest {
         Department testDepartment = setupDepartment();
         assertEquals(1, testDepartment.getTotalEmployees());
     }
-
+    @Test
+    public void setNameSetsCorrectName() throws Exception {
+        Department testDepartment = setupDepartment();
+        testDepartment.setName("Research");
+        assertNotEquals("Finance",testDepartment.getName());
+    }
+    @Test
+    public void setDescriptionSetsCorrectDescription() throws Exception {
+        Department testDepartment = setupDepartment();
+        testDepartment.setDescription("Finds stuff out");
+        assertNotEquals("Handles money",testDepartment.getDescription());
+    }
+    @Test
+    public void setEmployeesSetsCorrectEmployees() throws Exception {
+        Department testDepartment = setupDepartment();
+        testDepartment.setTotalEmployees(5);
+        assertNotEquals(1,testDepartment.getTotalEmployees());
+    }
     private Department setupDepartment() {
     }
 }
