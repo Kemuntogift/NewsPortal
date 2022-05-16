@@ -10,6 +10,7 @@ import java.util.List;
 public class Sql2oNewsDao implements NewsDao{
     private final Sql2o sql2o;
     public Sql2oNewsDao(Sql2o sql2o) { this.sql2o = sql2o; }
+
     @Override
     public void addNewsToDepartment(int deptid, int newsid, int userid) {
         String sql = "INSERT INTO departments_news (deptid,newsid,userid) VALUES (:deptid,:newsid,:userid)";
@@ -81,5 +82,43 @@ public class Sql2oNewsDao implements NewsDao{
         } catch (Sql2oException ex) {
             System.out.println(ex);
         }
+    }
+    @Override
+    public void add(News news) {
+        String selectedType = selectedDepartments(news.getType());
+
+        String sql = "INSERT INTO news (title,description,type,author) VALUES (:title,:description,:type,:author)";
+        try (Connection con = sql2o.open()) {
+            int id = (int) con.createQuery(sql,true)
+                    .addParameter("title",news.getTitle())
+                    .addParameter("description",news.getDescription())
+                    .addParameter("type",selectedType)
+                    .addParameter("author",news.getAuthor())
+                    .executeUpdate()
+                    .getKey();
+            news.setId(id);
+        } catch (Sql2oException ex){
+            System.out.println(ex);
+        }
+    }
+    private String selectedDepartments(String deptName) {
+        String sql = "SELECT name from departments;";
+        try (Connection con = sql2o.open()) {
+            List<String> allNames = con.createQuery(sql)
+                    .executeAndFetch(String.class);
+
+            if(deptName.equals("General")){
+                deptName = "General";
+            }
+            else {
+                for(String name:allNames){
+                    if(deptName.equals(name)){
+                        deptName = name;
+                        break;
+                    }
+                }
+            }
+        }
+        return deptName;
     }
 }
