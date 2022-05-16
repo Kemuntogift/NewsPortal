@@ -1,5 +1,8 @@
 package dao;
 
+import models.Department;
+import models.News;
+import models.User;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -58,5 +61,36 @@ class Sql2oNewsDaoTest {
 
     @Test
     void add() {
+    }
+
+//    HELPERS
+private Department setupDepartment(){
+    Department department = new Department("IT","Automating services", 5);
+    departmentDao.add(department);
+    return department;
+}
+    private User setupUser(){
+        User user = new User("Diane","Cook","Catering");
+        userDao.add(user);
+        return user;
+    }
+
+    private User secondUser(){
+        User user = new User("Karen","Developer","IT");
+        userDao.add(user);
+        return user;
+    }
+    private News setupNews(){
+        News news = new News("Breaking news", "Offices closed over flu outbreak", "General", "Kemunto");
+        news.setAuthor(setupUser().getName());
+        newsDao.add(news);
+        return news;
+    }
+    private News secondNews(){
+        News news = new News("Sports","Offices closed over flu outbeak", "Department", "Danny");
+        news.setType("entertainment");
+        news.setAuthor(secondUser().getName());
+        newsDao.add(news);
+        return news;
     }
 }
