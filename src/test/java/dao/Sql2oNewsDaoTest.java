@@ -37,30 +37,17 @@ class Sql2oNewsDaoTest {
 
     @Test
     void findById() {
+        News news = setupNews();
+        News news2 = secondNews();
+        assertTrue(news.equals(newsDao.findById(news.getId())));
     }
 
-    @Test
-    void allNews() {
-    }
+
 
     @Test
-    void allGeneralNews() {
-    }
-
-    @Test
-    void allDepartmentalNews() {
-    }
-
-    @Test
-    void deleteById() {
-    }
-
-    @Test
-    void deleteAll() {
-    }
-
-    @Test
-    void add() {
+    void addNewsSetsId() {
+        News news = setupNews();
+        assertNotEquals(0,news.getId());
     }
 
 //    HELPERS
