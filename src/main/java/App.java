@@ -25,6 +25,10 @@ public class App {
         newsDao = new Sql2oNewsDao(sql2o);
         conn = sql2o.open();
 
+//        get request for all departments
+        get("/departments","application/json",(request, response) -> gson.toJson(departmentDao.allDepartments()));
+
+        //        post request for new department
         post("/departments/new","application/json",(request, response) -> {
             Department department = gson.fromJson(request.body(),Department.class);
             departmentDao.add(department);
