@@ -120,23 +120,21 @@ public class App {
         });
 
         //USERS
-        //post users
-        post("/users/:userId/news/new","application/json",(request, response) -> {
+        //get users
+        get("/users","application/json",(request, response) -> gson.toJson(userDao.allUsers()));
+
+        get("/users/:userId/details","application/json",(request, response) -> {
             int userId = Integer.parseInt(request.params("userId"));
             User foundUser = userDao.findById(userId);
-
             if (foundUser != null) {
-                News news = gson.fromJson(request.body(),News.class);
-                news.setAuthor(foundUser.getName());
-                newsDao.add(news);
-                newsDao.addNewsToDepartment(0,news.getId(),userId);
-                response.status(201);
-                return gson.toJson(news);
+                return gson.toJson(userDao.findById(userId));
             }
             else {
-                return "{\"Error 404!\":\"User not found.\"}";
+                return "{\"Error!\":\"User not found.\"}";
             }
         });
+
+
         //filter
         after((req, res) -> res.type("application/json"));
 
