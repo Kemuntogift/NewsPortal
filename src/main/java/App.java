@@ -120,7 +120,7 @@ public class App {
         });
 
         //USERS
-        //get users
+        //get all users
         get("/users","application/json",(request, response) -> gson.toJson(userDao.allUsers()));
 
         get("/users/:userId/details","application/json",(request, response) -> {
@@ -134,6 +134,29 @@ public class App {
             }
         });
 
+        //post user news
+        post("/users/:userId/news/new","application/json",(request, response) -> {
+            int userId = Integer.parseInt(request.params("userId"));
+            User foundUser = userDao.findById(userId);
+
+            if (foundUser != null) {
+                News news = gson.fromJson(request.body(),News.class);
+                news.setAuthor(foundUser.getName());
+                newsDao.add(news);
+                newsDao.addNewsToDepartment(0,news.getId(),userId);
+                response.status(201);
+                return gson.toJson(news);
+            }
+            else {
+                return "{\"Error!\":\"News cannot be posted.\"}";
+            }
+        });
+
+        //get user/author news
+        get("/users/:userId/news","application/json",(request, response) -> {
+            int userId = Integer.parseInt(request.params("userId"));
+            return gson.toJson(userDao.myNews(userId));
+        });
 
         //filter
         after((req, res) -> res.type("application/json"));
