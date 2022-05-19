@@ -57,7 +57,21 @@ public class App {
             return gson.toJson(departmentDao.findById(deptId));
         });
 
+        post("/departments/:deptId/users/new","application/json",(request, response) -> {
+            int deptId = Integer.parseInt(request.params("deptId"));
+            Department department = departmentDao.findById(deptId);
 
+            if(department != null){
+                User employee = gson.fromJson(request.body(),User.class);
+                employee.setDepartment(department.getName());
+                userDao.add(employee);
+                departmentDao.addUserToDepartment(department,employee);
+                response.status(201);
+                return gson.toJson(employee);
+            } else {
+                throw new ApiException(404,"Department not found");
+            }
+        });
         //filter
         after((req, res) -> res.type("application/json"));
 
