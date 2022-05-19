@@ -92,7 +92,7 @@ public class App {
             }
         });
 
-        //post request for news from a user in a department
+        //post request for news from a user in a specific department using Ids
         post("/departments/:deptId/users/:userId/news/new","application/json",(request, response) -> {
             int userId = Integer.parseInt(request.params("userId"));
             int deptId = Integer.parseInt(request.params("deptId"));
@@ -112,6 +112,13 @@ public class App {
                 return "{\"Error!\":\"User and Department could not be found\"}";
             }
         });
+
+        //get department news
+        get("/departments/:deptId/news","application/json",(request, response) -> {
+            int deptId = Integer.parseInt(request.params("deptId"));
+            return gson.toJson(departmentDao.allDepartmentNews(deptId));
+        });
+
 
         //filter
         after((req, res) -> res.type("application/json"));
