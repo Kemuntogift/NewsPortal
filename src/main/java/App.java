@@ -72,6 +72,14 @@ public class App {
                 throw new ApiException(404,"Department not found");
             }
         });
+
+        //get request for users in a department
+        get("/departments/:deptId/users","application/json",(request, response) -> {
+            int deptId = Integer.parseInt(request.params("deptId"));
+            return gson.toJson(departmentDao.allDepartmentEmployees(deptId));
+        });
+
+
         //filter
         after((req, res) -> res.type("application/json"));
 
