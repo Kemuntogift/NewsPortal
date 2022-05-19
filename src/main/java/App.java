@@ -51,6 +51,12 @@ public class App {
             }
         });
 
+        //get department details
+        get("/departments/:deptId/details","application/json",(request, response) -> {
+            int deptId = Integer.parseInt(request.params("deptId"));
+            return gson.toJson(departmentDao.findById(deptId));
+        });
+
 
         //filter
         after((req, res) -> res.type("application/json"));
