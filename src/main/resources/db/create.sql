@@ -1,3 +1,6 @@
+--CREATE DATABASE news_portal;
+--\c news_portal
+
 SET MODE PostgreSQL;
 
 CREATE TABLE IF NOT EXISTS departments (
@@ -35,4 +38,4 @@ CREATE TABLE IF NOT EXISTS departments_users (
   userid int
 );
 
-
+--CREATE DATABASE news_portal_test WITH TEMPLATE news_portal;
