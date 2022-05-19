@@ -158,6 +158,9 @@ public class App {
             return gson.toJson(userDao.myNews(userId));
         });
 
+        //NEWS
+
+
         //filter
         after((req, res) -> res.type("application/json"));
 
