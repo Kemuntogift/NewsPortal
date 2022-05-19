@@ -26,8 +26,6 @@ public class App {
         newsDao = new Sql2oNewsDao(sql2o);
         conn = sql2o.open();
 
-       //get request for all departments
-        get("/departments","application/json",(request, response) -> gson.toJson(departmentDao.allDepartments()));
 
         //post request for new department
         post("/departments/new","application/json",(request, response) -> {
@@ -36,6 +34,23 @@ public class App {
             response.status(201);
             return gson.toJson(department);
         });
+
+        //get request for all departments
+        get("/departments","application/json",(request, response) -> gson.toJson(departmentDao.allDepartments()));
+
+        //get users in department
+        get("/departments/:deptId/users/:userId/details","application/json",(request, response) -> {
+            int userId = Integer.parseInt(request.params("userId"));
+            User foundUser = userDao.findById(userId);
+
+            if (foundUser != null) {
+                return gson.toJson(foundUser);
+            }
+            else {
+                return "{\"Error!\":\"User not found\"}";
+            }
+        });
+
 
         //filter
         after((req, res) -> res.type("application/json"));
