@@ -1,5 +1,6 @@
 import static spark.Spark.*;
-
+import static spark.Spark.get;
+import static spark.Spark.post;
 import com.google.gson.Gson;
 import models.*;
 import dao.Sql2oNewsDao;
