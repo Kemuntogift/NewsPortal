@@ -135,22 +135,7 @@ public class App {
         });
 
         //post user news
-        post("/users/:userId/news/new","application/json",(request, response) -> {
-            int userId = Integer.parseInt(request.params("userId"));
-            User foundUser = userDao.findById(userId);
 
-            if (foundUser != null) {
-                News news = gson.fromJson(request.body(),News.class);
-                news.setAuthor(foundUser.getName());
-                newsDao.add(news);
-                newsDao.addNewsToDepartment(0,news.getId(),userId);
-                response.status(201);
-                return gson.toJson(news);
-            }
-            else {
-                return "{\"Error!\":\"News cannot be posted.\"}";
-            }
-        });
 
         //get user/author news
         get("/users/:userId/news","application/json",(request, response) -> {
@@ -159,7 +144,8 @@ public class App {
         });
 
         //NEWS
-
+        //get all news
+        get("/news","application/json",(request, response) -> gson.toJson(newsDao.allNews()));
 
         //filter
         after((req, res) -> res.type("application/json"));
