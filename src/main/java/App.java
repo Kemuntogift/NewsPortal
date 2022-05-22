@@ -135,7 +135,22 @@ public class App {
         });
 
         //post user news
+        post("/users/:userId/news/new","application/json",(request, response) -> {
+            int userId = Integer.parseInt(request.params("userId"));
+            User foundUser = userDao.findById(userId);
 
+            if (foundUser != null) {
+                News news = gson.fromJson(request.body(),News.class);
+                news.setAuthor(foundUser.getName());
+                newsDao.add(news);
+                newsDao.addNewsToDepartment(0,news.getId(),userId);
+                response.status(201);
+                return gson.toJson(news);
+            }
+            else {
+                return "{\"Error!\":\"User and news not found\"}";
+            }
+        });
 
         //get user/author news
         get("/users/:userId/news","application/json",(request, response) -> {
