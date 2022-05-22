@@ -162,6 +162,10 @@ public class App {
         //get all news
         get("/news","application/json",(request, response) -> gson.toJson(newsDao.allNews()));
 
+        //get news by type
+        get("/news/general","application/json",(request, response) -> gson.toJson(newsDao.allGeneralNews()));
+        get("/news/departments","application/json",(request, response) -> gson.toJson(newsDao.allDepartmentalNews()));
+
         //filter
         after((req, res) -> res.type("application/json"));
 
