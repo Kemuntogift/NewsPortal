@@ -166,6 +166,12 @@ public class App {
         get("/news/general","application/json",(request, response) -> gson.toJson(newsDao.allGeneralNews()));
         get("/news/departments","application/json",(request, response) -> gson.toJson(newsDao.allDepartmentalNews()));
 
+        //get specific
+        get("/news/:newsId/details","application/json",(request, response) -> {
+            int newsId = Integer.parseInt(request.params("newsId"));
+            return gson.toJson(newsDao.findById(newsId));
+        });
+
         //filter
         after((req, res) -> res.type("application/json"));
 
