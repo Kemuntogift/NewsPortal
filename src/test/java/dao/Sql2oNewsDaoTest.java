@@ -3,6 +3,7 @@ package dao;
 import models.Department;
 import models.News;
 import models.User;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,18 +19,14 @@ class Sql2oNewsDaoTest {
     private static Sql2oUserDao userDao;
     @BeforeEach
     public void setUp() throws Exception {
-        String connectionString = "jdbc:h2:mem:testing;INIT=RUNSCRIPT from 'classpath:db/create.sql'";
-        Sql2o sql2o = new Sql2o(connectionString, "", "");
+//        String connectionString = "jdbc:h2:mem:testing;INIT=RUNSCRIPT from 'classpath:db/create.sql'";
+        Sql2o sql2o = new Sql2o("jdbc:postgresql://localhost:5432/news_portal_test", "gift", "KEMUNTO543210");
         departmentDao = new Sql2oDepartmentDao(sql2o);
         userDao = new Sql2oUserDao(sql2o);
         newsDao = new Sql2oNewsDao(sql2o);
         conn = sql2o.open();
     }
 
-    @AfterEach
-    public void tearDown() {
-        conn.close();
-    }
 
     @Test
     void addNewsToDepartment() {
@@ -48,6 +45,16 @@ class Sql2oNewsDaoTest {
     void addNewsSetsId() {
         News news = setupNews();
         assertNotEquals(0,news.getId());
+    }
+    @AfterEach
+    public void tearDown() {
+        departmentDao.deleteAll();
+        userDao.deleteAll();
+        newsDao.deleteAll();
+    }
+    @AfterAll
+    public void afterAll() {
+        conn.close();
     }
 
 //    HELPERS
