@@ -57,7 +57,18 @@ deptid int,
 newsid int,
 userid int
 );
-
+# Routes 
+## POST /departments/new 
+### Response
+{
+"id": 7,
+"name": "Warehouse",
+"description": "Stores function",
+"totalEmployees": 0
+}
+## GET /departments
+### Response 
+Returns all
 ## In order to run locally
 * Go to App.class in main/java folder and guided by the comments make necessary changes
 * Go to all the tests in test/java folder and guided by the comments make necessary changes
