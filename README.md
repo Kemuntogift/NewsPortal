@@ -58,16 +58,18 @@ newsid int,
 userid int
 );
 # Routes 
-## POST /departments/new 
-### Response
-{
-"id": 7,
-"name": "Warehouse",
-"description": "Stores function",
-"totalEmployees": 0
-}
-## GET /departments
-### Response 
+/users Lists all the users
+GET /departments Gets all the departments
+POST /departments/new Post new department
+GET /departments/:deptId/details get specific department
+POST /departments/:deptId/users/new Creates new department from specific user
+GET /departments/:deptId/users/:userId/details" Users from individual department
+GET /departments/:deptId/users/:userId/news gets User news
+POST /departments/:deptId/users/:userId/news/new" A user can post news
+GET /departments/:deptId/news Get news from specific department
+GET /users Lists all the users
+GET /users/:userId/news Get news from specific use news
+GET /news Get all news
 Returns all
 ## In order to run locally
 * Go to App.class in main/java folder and guided by the comments make necessary changes

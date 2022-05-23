@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS departments_users (
   userid int
 );
 
-CREATE TABLE IF NOT EXISTS departments_users (
+CREATE TABLE IF NOT EXISTS departments_news (
   id int PRIMARY KEY auto_increment,
   deptid int,
   newsid int,
