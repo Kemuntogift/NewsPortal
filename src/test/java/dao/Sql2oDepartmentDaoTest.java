@@ -2,6 +2,7 @@ package dao;
 
 import models.Department;
 import models.User;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,17 +18,14 @@ class Sql2oDepartmentDaoTest {
 
     @BeforeEach
     public void setUp() throws Exception {
-        String connectionString = "jdbc:h2:mem:testing;INIT=RUNSCRIPT from 'classpath:db/create.sql'";
-        Sql2o sql2o = new Sql2o(connectionString, "", "");
+//        String connectionString = "jdbc:h2:mem:testing;INIT=RUNSCRIPT from 'classpath:db/create.sql'";
+        Sql2o sql2o = new Sql2o("jdbc:postgresql://localhost:5432/news_portal_test", "gift", "KEMUNTO543210");
         departmentDao = new Sql2oDepartmentDao(sql2o);
         userDao = new Sql2oUserDao(sql2o);
         conn = sql2o.open();
     }
 
-    @AfterEach
-    public void tearDown() {
-        conn.close();
-    }
+
 
     @Test
     public void addDepartmentSetsId() {
@@ -84,7 +82,15 @@ class Sql2oDepartmentDaoTest {
         departmentDao.deleteAll();
         assertEquals(0,departmentDao.allDepartments().size());
     }
-
+    @AfterEach
+    public void tearDown() {
+        departmentDao.deleteAll();
+        userDao.deleteAll();
+    }
+    @AfterAll
+    public void afterAll() {
+        conn.close();
+    }
 //    HELPERS
 private Department setupDepartment(){
     Department department = new Department("IT","Automating services", 5);
